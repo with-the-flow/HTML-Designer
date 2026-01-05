@@ -1,0 +1,91 @@
+/* Menu.css —— 顶部菜单栏 & 多级下拉 */
+
+/* 1. 顶层容器 */
+.menu-container {
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    user-select: none;
+}
+
+/* 2. 主菜单水平排列 */
+.html-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0 8px;
+    display: flex;
+}
+
+.html-menu > li {
+    position: relative;
+}
+
+.html-menu > li > a {
+    display: block;
+    padding: 10px 12px;
+    color: #222;
+    text-decoration: none;
+    transition: background .15s;
+}
+
+.html-menu > li:hover > a {
+    background: #f2f2f2;
+    color: #0066cc;
+}
+
+/* 3. 二级/三级下拉通用 */
+.submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    background: #fff;
+    border: 1px solid #d0d6e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .12);
+    z-index: 1000;
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+}
+
+.html-menu li:hover > .submenu {
+    display: block;
+}
+
+.submenu li {
+    position: relative;
+}
+
+.submenu li a {
+    display: block;
+    padding: 6px 12px 6px 28px;
+    color: #333;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background .15s;
+}
+
+.submenu li a:hover {
+    background: #e6f0ff;
+    color: #0066cc;
+}
+
+.submenu li a .shortcut {
+    float: right;
+    color: #7f8c8d;
+    font-size: 12px;
+    margin-left: 20px;
+}
+
+.divider {
+    height: 1px;
+    background: #e0e6f0;
+    margin: 4px 0;
+}
+
+.submenu .submenu {
+    top: -4px;
+    left: 100%;
+    margin-left: 1px;
+}
