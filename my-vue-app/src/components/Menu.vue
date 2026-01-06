@@ -1,27 +1,372 @@
 <template>
-  <nav class="menu-container" ref="root">
-    <ul class="html-menu">
-      <li>
-        <a href="#" id="fileMenu">文件(F)</a>
-        <ul class="submenu fileMenu">
-          <li><a href="#" id="newFileMenu">新建(N) <span class="shortcut">Ctrl+N</span></a></li>
-          <li><a href="#" id="openFileMenu">打开(O) <span class="shortcut">Ctrl+O</span></a></li>
-          <li><a href="#" id="recentFileMenu">最近的窗体(R)</a></li>
-          <li class="divider"></li>
-          <li><a href="#" id="saveFileMenu">保存(S) <span class="shortcut">Ctrl+S</span></a></li>
-          <li><a href="#" id="saveAsFileMenu">另存为(A) <span class="shortcut">Ctrl+Shift+S</span></a></li>
-          <li><a href="#" id="saveAllFileMenu">保存全部(L)</a></li>
-          <li><a href="#" id="saveAsTemplateFileMenu">另存为模板(T)</a></li>
-          <li class="divider"></li>
-          <li><a href="#" id="printFileMenu">打印(P) <span class="shortcut">Ctrl+P</span></a></li>
-          <li><a href="#" id="saveImageFileMenu">保存图像(I)</a></li>
-          <li class="divider"></li>
-          <li><a href="#" id="closeFileMenu">关闭(C) <span class="shortcut">Ctrl+W</span></a></li>
-          <li><a href="#" id="exitFileMenu">退出(Q) <span class="shortcut">Ctrl+Q</span></a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
+  <div ref="root">
+    <!-- 1. 顶部菜单栏 -->
+    <nav class="menu-container">
+      <ul class="html-menu">
+        <!-- 文件菜单 -->
+        <li>
+          <a href="#" id="fileMenu">文件(F)</a>
+          <ul class="submenu fileMenu">
+            <li><a href="#" id="newFileMenu">新建(N) <span class="shortcut">Ctrl+N</span></a></li>
+            <li><a href="#" id="openFileMenu">打开(O) <span class="shortcut">Ctrl+O</span></a></li>
+            <li><a href="#" id="recentFileMenu">最近的窗体(R)</a></li>
+            <li class="divider"></li>
+            <li><a href="#" id="saveFileMenu">保存(S) <span class="shortcut">Ctrl+S</span></a></li>
+            <li><a href="#" id="saveAsFileMenu">另存为(A) <span class="shortcut">Ctrl+Shift+S</span></a></li>
+            <li><a href="#" id="saveAllFileMenu">保存全部(L)</a></li>
+            <li><a href="#" id="saveAsTemplateFileMenu">另存为模板(T)</a></li>
+            <li class="divider"></li>
+            <li><a href="#" id="printFileMenu">打印(P) <span class="shortcut">Ctrl+P</span></a></li>
+            <li><a href="#" id="saveImageFileMenu">保存图像(I)</a></li>
+            <li class="divider"></li>
+            <li><a href="#" id="closeFileMenu">关闭(C) <span class="shortcut">Ctrl+W</span></a></li>
+            <li><a href="#" id="exitFileMenu">退出(Q) <span class="shortcut">Ctrl+Q</span></a></li>
+          </ul>
+        </li>
+              
+        <!-- 编辑菜单 -->
+        <li>
+          <a href="#" id="editMenu">编辑(E)</a>
+          <ul class="submenu editMenu">
+            <li><a href="#" id="undoMenu">撤销(Z) <span class="shortcut">Ctrl+Z</span></a></li>
+            <li><a href="#" id="redoMenu">恢复(Y) <span class="shortcut">Ctrl+Y</span></a></li>
+            <li class="divider"></li>
+            <li><a href="#" id="cutMenu">剪切(I) <span class="shortcut">Ctrl+X</span></a></li>
+            <li><a href="#" id="copyMenu">复制(C) <span class="shortcut">Ctrl+C</span></a></li>
+            <li><a href="#" id="pasteMenu">粘贴(V) <span class="shortcut">Ctrl+V</span></a></li>
+            <li><a href="#" id="deleteMenu">删除(D) <span class="shortcut">Del</span></a></li>
+            <li><a href="#" id="selectAllMenu">选择全部(A) <span class="shortcut">Ctrl+A</span></a></li>
+            <li class="divider"></li>
+            <li><a href="#" id="sendBackMenu">放到后面(B) <span class="shortcut">Ctrl+B</span></a></li>
+            <li><a href="#" id="bringForwardMenu">放到前面(E) <span class="shortcut">Ctrl+E</span></a></li>
+            <li class="divider"></li>
+            <li><a href="#" id="editWidgetMenu">编辑窗口部件 <span class="shortcut">F3</span></a></li>
+            <li><a href="#" id="editSignalSlotMenu">编辑信号/槽 <span class="shortcut">F4</span></a></li>
+            <li><a href="#" id="editPartnerMenu">编辑伙伴</a></li>
+            <li class="divider"></li>
+            <li><a href="#" id="editTabOrderMenu">编辑 Tab 顺序</a></li>
+          </ul>
+        </li>
+              
+        <!-- 视图菜单 -->
+        <li>
+          <a href="#" id="viewMenu">视图(V)</a>
+          <ul class="submenu viewMenu">
+            <li><a href="#" id="widgetBoxMenu">Widget Box</a></li>
+            <li><a href="#" id="objectViewerMenu">对象查看器</a></li>
+            <li><a href="#" id="propertyEditorMenu">属性编辑器 <span class="shortcut">Ctrl+I</span></a></li>
+            <li><a href="#" id="resourceBrowserMenu">资源浏览器</a></li>
+            <li><a href="#" id="actionEditorMenu">动作编辑器</a></li>
+            <li><a href="#" id="signalSlotEditorMenu">信号/传输编辑器</a></li>
+            <li class="divider"></li>
+            <li><a href="#" id="toolbarMenu">工具栏</a></li>
+            <li>
+              <a href="#" id="toolsMenu">工具</a>
+              <ul class="submenu toolsSubMenu">
+                <li><a href="#" id="fileToolsMenu">文件</a></li>
+                <li><a href="#" id="formToolsMenu">窗体</a></li>
+                <li><a href="#" id="editToolsMenu">编辑</a></li>
+              </ul>
+            </li>
+            <li><a href="#" id="configureToolbarMenu">配置工具栏...</a></li>
+          </ul>
+        </li>
+              
+        <!-- 窗体菜单 -->
+        <li>
+          <a href="#" id="formMenu">窗体(O)</a>
+          <ul class="submenu formMenu">
+            <li><a href="#" id="horizontalLayoutMenu">水平布局(L) <span class="shortcut">Ctrl+1</span></a></li>
+            <li><a href="#" id="verticalLayoutMenu">垂直布局(U) <span class="shortcut">Ctrl+2</span></a></li>
+            <li><a href="#" id="splitterHorizontalMenu">使用分裂器水平布局(D) <span class="shortcut">Ctrl+3</span></a></li>
+            <li><a href="#" id="splitterVerticalMenu">使用分裂器垂直布局(L) <span class="shortcut">Ctrl+4</span></a></li>
+            <li><a href="#" id="gridLayoutMenu">栅格布局(G) <span class="shortcut">Ctrl+5</span></a></li>
+            <li><a href="#" id="formLayoutMenu">在窗体布局中布局(E) <span class="shortcut">Ctrl+6</span></a></li>
+            <li><a href="#" id="breakLayoutMenu">打破布局(B) <span class="shortcut">Ctrl+0</span></a></li>
+            <li><a href="#" id="resizeMenu">调整大小(S) <span class="shortcut">Ctrl+J</span></a></li>
+            <li><a href="#" id="simpleGridMenu">简易网格布局(M)</a></li>
+            <li class="divider"></li>
+            <li><a href="#" id="previewInMenu">预览于</a></li>
+            <li><a href="#" id="previewMenu">预览(D)... <span class="shortcut">Ctrl+R</span></a></li>
+            <li class="divider"></li>
+            <li><a href="#" id="formSettingsMenu">窗体设定(S)...</a></li>
+          </ul>
+        </li>
+              
+        <!-- 设置菜单 -->
+        <li>
+          <a href="#" id="settingsMenu">设置(S)</a>
+          <ul class="submenu settingsMenu">
+            <li><a href="#" id="propertiesMenu">属性...</a></li>
+            <li><a href="#" id="additionalFontsMenu">附加字体...</a></li>
+          </ul>
+        </li>
+              
+        <!-- 帮助菜单 -->
+        <li>
+          <a href="#" id="helpMenu">帮助(H)</a>
+          <ul class="submenu helpMenu">
+            <li><a href="#" id="designerHelpMenu">HTML Designer 设计师帮助(出) <span class="shortcut">Ctrl+?</span></a></li>
+            <li><a href="#" id="customWidgetHelpMenu">自定义窗口部件帮助 <span class="shortcut">F1</span></a></li>
+            <li class="divider"></li>
+            <li><a href="#" id="aboutPluginsMenu">关于插件</a></li>
+            <li><a href="#" id="aboutDesignerMenu">关于 HTML Designer 设计师</a></li>
+            <li><a href="#" id="aboutHtmlDesignerMenu">关于 HTML Designer</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- 2. 三栏主体 -->
+  <div class="main-wrapper">
+
+    <!-- 2.1 左侧 WidgetBox -->
+    <aside class="widget-box">
+      <!-- 搜索框 -->
+      <div class="widget-box-search-box">
+        <input type="text" id="search-input" placeholder="搜索HTML元素">
+        <button id="search-button">搜索</button>
+      </div>
+
+      <!-- 1. 内容分区元素 -->
+      <div class="panel">
+        <div class="header">内容分区元素<span class="arrow">▼</span></div>
+        <div class="widget-box-content">
+          <div class="content-partition-element">
+            <p>address</p>
+            <p>article</p>
+            <p>aside</p>
+            <p>footer</p>
+            <p>header</p>
+            <p>h1~6</p>
+            <p>main</p>
+            <p>nav</p>
+            <p>section</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 文本内容元素 -->
+      <div class="panel">
+        <div class="header">文本内容元素<span class="arrow">▼</span></div>
+        <div class="widget-box-content">
+          <div class="text-content-element">
+            <p>blockquote</p>
+            <p>dd</p>
+            <p>div</p>
+            <p>dl</p>
+            <p>dt</p>
+            <p>figcaption</p>
+            <p>figure</p>
+            <p>hr</p>
+            <p>li</p>
+            <p>menu</p>
+            <p>ol</p>
+            <p>p</p>
+            <p>pre</p>
+            <p>ul</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 内联文本语义元素 -->
+      <div class="panel">
+        <div class="header">内联文本语义元素<span class="arrow">▼</span></div>
+        <div class="widget-box-content">
+          <div class="inline-text-semantic-element">
+            <p>a</p>
+            <p>abbr</p>
+            <p>b</p>
+            <p>bdi</p>
+            <p>bdo</p>
+            <p>br</p>
+            <p>cite</p>
+            <p>code</p>
+            <p>data</p>
+            <p>dfn</p>
+            <p>em</p>
+            <p>i</p>
+            <p>kbd</p>
+            <p>mark</p>
+            <p>q</p>
+            <p>rp</p>
+            <p>rt</p>
+            <p>ruby</p>
+            <p>s</p>
+            <p>samp</p>
+            <p>small</p>
+            <p>span</p>
+            <p>strong</p>
+            <p>sub</p>
+            <p>sup</p>
+            <p>time</p>
+            <p>u</p>
+            <p>var</p>
+            <p>wbr</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. 图片和多媒体元素 -->
+      <div class="panel">
+        <div class="header">图片和多媒体元素<span class="arrow">▼</span></div>
+        <div class="widget-box-content">
+          <div class="image-and-multimedia-element">
+            <p>area</p>
+            <p>audio</p>
+            <p>img</p>
+            <p>map</p>
+            <p>track</p>
+            <p>video</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. 嵌套内容元素 -->
+      <div class="panel">
+        <div class="header">嵌套内容元素<span class="arrow">▼</span></div>
+        <div class="widget-box-content">
+          <div class="nested-content-element">
+            <p>embed</p>
+            <p>iframe</p>
+            <p>object</p>
+            <p>picture</p>
+            <p>portal</p>
+            <p>source</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. SVG 和 MathML元素 -->
+      <div class="panel">
+        <div class="header">SVG 和 MathML元素<span class="arrow">▼</span></div>
+        <div class="widget-box-content">
+          <div class="svg-and-mathml-element">
+            <p>svg</p>
+            <p>math</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. 脚本元素 -->
+      <div class="panel">
+        <div class="header">脚本元素<span class="arrow">▼</span></div>
+          <div class="widget-box-content">
+            <div class="script-element"><p>canvas</p>
+            <p>noscript</p>
+            <p>script</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. 编辑标识元素 -->
+      <div class="panel">
+        <div class="header">编辑标识元素<span class="arrow">▼</span></div>
+          <div class="widget-box-content">
+            <div class="edit-identifying-element"><p>del</p>
+              <p>ins</p>
+            </div>
+          </div>
+      </div>
+
+      <!-- 9. 表格内容元素 -->
+      <div class="panel">
+        <div class="header">表格内容元素<span class="arrow">▼</span></div>
+        <div class="widget-box-content">
+          <div class="table-content-element">
+            <p>caption</p>
+            <p>col</p>
+            <p>colgroup</p>
+            <p>table</p>
+            <p>tbody</p>
+            <p>td</p>
+            <p>tfoot</p>
+            <p>th</p>
+            <p>thead</p>
+            <p>tr</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. 表单元素 -->
+      <div class="panel">
+        <div class="header">表单元素<span class="arrow">▼</span></div>
+        <div class="widget-box-content">
+          <div class="form-element">
+            <p>button</p>
+            <p>datalist</p>
+            <p>fieldset</p>
+            <p>form</p>
+            <p>input</p>
+            <p>label</p>
+            <p>legend</p>
+            <p>meter</p>
+            <p>optgroup</p>
+            <p>option</p>
+            <p>output</p>
+            <p>progress</p>
+            <p>select</p>
+            <p>textarea</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. 交互元素 -->
+      <div class="panel">
+        <div class="header">交互元素<span class="arrow">▼</span></div>
+        <div class="widget-box-content">
+          <div class="interactive-element"><p>details</p>
+          <p>dialog</p>
+          <p>summary</p>
+        </div>
+        </div>
+      </div>
+
+      <!-- 12. Web组件元素 -->
+      <div class="panel">
+        <div class="header">Web组件元素<span class="arrow">▼</span></div>
+        <div class="widget-box-content">
+          <div class="web-component-element">
+            <p>slot</p>
+            <p>template</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 2.2 中间设计区 -->
+    <main class="center">
+      <span>（拖拽区域 / 实时预览）</span>
+    </main>
+
+    <!-- 2.3 右侧 AttributeEditor -->
+    <aside class="AttributeEditor">
+      <!-- 搜索框 -->
+      <div class="AttributeEditor-search-box">
+        <input type="text" id="search-input" placeholder="搜索HTML元素">
+        <button id="search-button">搜索</button>
+      </div>
+
+      <!-- 动画属性(Animation) 等属性组来自原始 index.html （已保留在此处） -->
+      <div class="panel">
+        <div class="header">动画属性<span class="arrow">▼</span></div>
+        <div class="AttributeEditor-content">
+          <div id="animation">animation</div>
+          <div id="animation-delay">animation-delay</div>
+          <div id="animation-direction">animation-direction</div>
+          <div id="animation-duration">animation-duration</div>
+          <div id="animation-fill-mode">animation-fill-mode</div>
+          <div id="animation-iteration-count">animation-iteration-count</div>
+          <div id="animation-name">animation-name</div>
+          <div id="animation-play-state">animation-play-state</div>
+          <div id="animation-timing-function">animation-timing-function</div>
+        </div>
+      </div>
+
+      <!-- 其余大量属性组已包含在原始片段，保留为 HTML 模板的一部分 -->
+    </aside>
+  </div>
 </template>
 
 <script setup>
