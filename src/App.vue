@@ -1,11 +1,6 @@
 <template>
   <div class="app-root">
     <Menu />
-    <div class="main-wrapper">
-      <WidgetBox />
-      <main class="center"><span>（拖拽区域 / 实时预览）</span></main>
-      <AttributeEditor />
-    </div>
   </div>
 </template>
 
