@@ -1,214 +1,21 @@
 <!-- <template> -->
 <template>
-	<!-- 2.1 左侧 WidgetBox (moved from Menu.vue) -->
+	<!-- WidgetBox: search + collapsible panels + item click -->
 	<aside class="widget-box">
-		<!-- 搜索框 -->
 		<div class="widget-box-search-box">
-			<input type="text" id="search-input" placeholder="搜索HTML元素">
-			<button id="search-button">搜索</button>
+			<input type="text" v-model="query" placeholder="搜索HTML元素" @keydown.enter.prevent="filterWidgets" />
+			<button @click="filterWidgets">搜索</button>
+			<button @click="() => { query = '' ; filterWidgets() }">清除</button>
 		</div>
 
-		<!-- 1. 内容分区元素 -->
-		<div class="panel">
-			<div class="header">内容分区元素<span class="arrow">▼</span></div>
-			<div class="widget-box-content">
-				<div class="content-partition-element">
-					<p>address</p>
-					<p>article</p>
-					<p>aside</p>
-					<p>footer</p>
-					<p>header</p>
-					<p>h1~6</p>
-					<p>main</p>
-					<p>nav</p>
-					<p>section</p>
-				</div>
+		<div v-for="(panel, idx) in panels" :key="panel.name" class="panel">
+			<div class="header" @click="togglePanel(idx)">
+				<span>{{ panel.name }}</span>
+				<span class="arrow">{{ panel.open ? '▲' : '▼' }}</span>
 			</div>
-		</div>
-
-		<!-- 2. 文本内容元素 -->
-		<div class="panel">
-			<div class="header">文本内容元素<span class="arrow">▼</span></div>
-			<div class="widget-box-content">
-				<div class="text-content-element">
-					<p>blockquote</p>
-					<p>dd</p>
-					<p>div</p>
-					<p>dl</p>
-					<p>dt</p>
-					<p>figcaption</p>
-					<p>figure</p>
-					<p>hr</p>
-					<p>li</p>
-					<p>menu</p>
-					<p>ol</p>
-					<p>p</p>
-					<p>pre</p>
-					<p>ul</p>
-				</div>
-			</div>
-		</div>
-
-		<!-- 3. 内联文本语义元素 -->
-		<div class="panel">
-			<div class="header">内联文本语义元素<span class="arrow">▼</span></div>
-			<div class="widget-box-content">
-				<div class="inline-text-semantic-element">
-					<p>a</p>
-					<p>abbr</p>
-					<p>b</p>
-					<p>bdi</p>
-					<p>bdo</p>
-					<p>br</p>
-					<p>cite</p>
-					<p>code</p>
-					<p>data</p>
-					<p>dfn</p>
-					<p>em</p>
-					<p>i</p>
-					<p>kbd</p>
-					<p>mark</p>
-					<p>q</p>
-					<p>rp</p>
-					<p>rt</p>
-					<p>ruby</p>
-					<p>s</p>
-					<p>samp</p>
-					<p>small</p>
-					<p>span</p>
-					<p>strong</p>
-					<p>sub</p>
-					<p>sup</p>
-					<p>time</p>
-					<p>u</p>
-					<p>var</p>
-					<p>wbr</p>
-				</div>
-			</div>
-		</div>
-
-		<!-- 4. 图片和多媒体元素 -->
-		<div class="panel">
-			<div class="header">图片和多媒体元素<span class="arrow">▼</span></div>
-			<div class="widget-box-content">
-				<div class="image-and-multimedia-element">
-					<p>area</p>
-					<p>audio</p>
-					<p>img</p>
-					<p>map</p>
-					<p>track</p>
-					<p>video</p>
-				</div>
-			</div>
-		</div>
-
-		<!-- 5. 嵌套内容元素 -->
-		<div class="panel">
-			<div class="header">嵌套内容元素<span class="arrow">▼</span></div>
-			<div class="widget-box-content">
-				<div class="nested-content-element">
-					<p>embed</p>
-					<p>iframe</p>
-					<p>object</p>
-					<p>picture</p>
-					<p>portal</p>
-					<p>source</p>
-				</div>
-			</div>
-		</div>
-
-		<!-- 6. SVG 和 MathML元素 -->
-		<div class="panel">
-			<div class="header">SVG 和 MathML元素<span class="arrow">▼</span></div>
-			<div class="widget-box-content">
-				<div class="svg-and-mathml-element">
-					<p>svg</p>
-					<p>math</p>
-				</div>
-			</div>
-		</div>
-
-		<!-- 7. 脚本元素 -->
-		<div class="panel">
-			<div class="header">脚本元素<span class="arrow">▼</span></div>
-				<div class="widget-box-content">
-					<div class="script-element"><p>canvas</p>
-					<p>noscript</p>
-					<p>script</p>
-				</div>
-			</div>
-		</div>
-
-		<!-- 8. 编辑标识元素 -->
-		<div class="panel">
-			<div class="header">编辑标识元素<span class="arrow">▼</span></div>
-				<div class="widget-box-content">
-					<div class="edit-identifying-element"><p>del</p>
-						<p>ins</p>
-					</div>
-				</div>
-		</div>
-
-		<!-- 9. 表格内容元素 -->
-		<div class="panel">
-			<div class="header">表格内容元素<span class="arrow">▼</span></div>
-			<div class="widget-box-content">
-				<div class="table-content-element">
-					<p>caption</p>
-					<p>col</p>
-					<p>colgroup</p>
-					<p>table</p>
-					<p>tbody</p>
-					<p>td</p>
-					<p>tfoot</p>
-					<p>th</p>
-					<p>thead</p>
-					<p>tr</p>
-				</div>
-			</div>
-		</div>
-
-		<!-- 10. 表单元素 -->
-		<div class="panel">
-			<div class="header">表单元素<span class="arrow">▼</span></div>
-			<div class="widget-box-content">
-				<div class="form-element">
-					<p>button</p>
-					<p>datalist</p>
-					<p>fieldset</p>
-					<p>form</p>
-					<p>input</p>
-					<p>label</p>
-					<p>legend</p>
-					<p>meter</p>
-					<p>optgroup</p>
-					<p>option</p>
-					<p>output</p>
-					<p>progress</p>
-					<p>select</p>
-					<p>textarea</p>
-				</div>
-			</div>
-		</div>
-
-		<!-- 11. 交互元素 -->
-		<div class="panel">
-			<div class="header">交互元素<span class="arrow">▼</span></div>
-			<div class="widget-box-content">
-				<div class="interactive-element"><p>details</p>
-				<p>dialog</p>
-				<p>summary</p>
-			</div>
-			</div>
-		</div>
-
-		<!-- 12. Web组件元素 -->
-		<div class="panel">
-			<div class="header">Web组件元素<span class="arrow">▼</span></div>
-			<div class="widget-box-content">
-				<div class="web-component-element">
-					<p>slot</p>
-					<p>template</p>
+			<div class="widget-box-content" v-show="panel.open">
+				<div :class="panel.className">
+					<p v-for="item in filtered(panel.items)" :key="item" draggable="true" @dragstart="onDragStart($event, item)" @click.stop="selectWidget(item)">{{ item }}</p>
 				</div>
 			</div>
 		</div>
@@ -223,8 +30,18 @@ const emit = defineEmits(['select-widget'])
 
 const query = ref('')
 const panels = ref([
-	{ name: '基础', open: true, items: ['Button', 'Text', 'Image'] },
-	{ name: '表单', open: false, items: ['Input', 'Checkbox', 'Select'] },
+	{ name: '内容分区元素', className: 'content-partition-element', open: true, items: ['address','article','aside','footer','header','h1','h2','h3','h4','h5','h6','main','nav','section'] },
+	{ name: '文本内容元素', className: 'text-content-element', open: false, items: ['blockquote','dd','div','dl','dt','figcaption','figure','hr','li','menu','ol','p','pre','ul'] },
+	{ name: '内联文本语义元素', className: 'inline-text-semantic-element', open: false, items: ['a','abbr','b','bdi','bdo','br','cite','code','data','dfn','em','i','kbd','mark','q','rp','rt','ruby','s','samp','small','span','strong','sub','sup','time','u','var','wbr'] },
+	{ name: '图片和多媒体元素', className: 'image-and-multimedia-element', open: false, items: ['area','audio','img','map','track','video'] },
+	{ name: '嵌套内容元素', className: 'nested-content-element', open: false, items: ['embed','iframe','object','picture','portal','source'] },
+	{ name: 'SVG 和 MathML元素', className: 'svg-and-mathml-element', open: false, items: ['svg','math'] },
+	{ name: '脚本元素', className: 'script-element', open: false, items: ['canvas','noscript','script'] },
+	{ name: '编辑标识元素', className: 'edit-identifying-element', open: false, items: ['del','ins'] },
+	{ name: '表格内容元素', className: 'table-content-element', open: false, items: ['caption','col','colgroup','table','tbody','td','tfoot','th','thead','tr'] },
+	{ name: '表单元素', className: 'form-element', open: false, items: ['button','datalist','fieldset','form','input','label','legend','meter','optgroup','option','output','progress','select','textarea'] },
+	{ name: '交互元素', className: 'interactive-element', open: false, items: ['details','dialog','summary'] },
+	{ name: 'Web组件元素', className: 'web-component-element', open: false, items: ['slot','template'] },
 ])
 
 function togglePanel(i) {
@@ -240,5 +57,27 @@ function filtered(items) {
 function selectWidget(item) {
 	console.log('Selected widget:', item)
 	emit('select-widget', item)
+}
+
+function filterWidgets() {
+	const q = (query.value || '').trim().toLowerCase()
+	if (!q) {
+		// restore defaults: open first panel, close others
+		panels.value.forEach((p, i) => p.open = i === 0)
+		return
+	}
+	panels.value.forEach(p => {
+		const any = p.items.some(it => it.toLowerCase().includes(q))
+		p.open = any
+	})
+}
+
+function onDragStart(e, item) {
+	try {
+		e.dataTransfer.setData('text/plain', item)
+		e.dataTransfer.effectAllowed = 'copy'
+	} catch (err) {
+		console.warn('dragstart failed', err)
+	}
 }
 </script>

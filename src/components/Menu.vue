@@ -121,7 +121,7 @@
   <!-- 2. 三栏主体 -->
   <div class="main-wrapper">
 
-    <WidgetBox />
+    <WidgetBox @select-widget="onSelectWidget" />
 
     <!-- 2.2 中间设计区 -->
     <main class="center">
@@ -164,6 +164,9 @@ import WidgetBox from './WidgetBox.vue'
 const root = ref(null)
 let recentFiles = []
 let currentFile = null
+let designArea = null
+let designDragOverHandler = null
+let designDropHandler = null
 
 function addRecentFile(file) {
   recentFiles = [file, ...recentFiles.filter(f => f !== file)].slice(0,5)
@@ -189,6 +192,18 @@ function renderRecentFiles() {
 function openRecentFile(file) {
   currentFile = file
   alert(`打开最近文件：${file}`)
+}
+
+function onSelectWidget(tag) {
+  const center = document.querySelector('.center')
+  if (!center) return
+  try {
+    const el = document.createElement(tag)
+    el.textContent = `<${tag}>`
+    center.appendChild(el)
+  } catch (e) {
+    console.warn('无法创建元素', tag)
+  }
 }
 
 onMounted(() => {
@@ -250,6 +265,32 @@ onMounted(() => {
     input.click()
   })
 
+  // 中间设计区拖放接收
+  designArea = document.querySelector('.center')
+  if (designArea) {
+    designDragOverHandler = e => {
+      e.preventDefault()
+      try { e.dataTransfer.dropEffect = 'copy' } catch (_) {}
+    }
+    designDropHandler = e => {
+      e.preventDefault()
+      const tag = e.dataTransfer.getData('text/plain')
+      if (!tag) return
+      try {
+        const node = document.createElement(tag)
+        node.textContent = `<${tag}> 拖拽生成`
+        node.style.border = '1px dashed #999'
+        node.style.padding = '4px'
+        node.style.margin = '4px'
+        designArea.appendChild(node)
+      } catch (err) {
+        console.warn('drop create element failed', err)
+      }
+    }
+    designArea.addEventListener('dragover', designDragOverHandler)
+    designArea.addEventListener('drop', designDropHandler)
+  }
+
   el.querySelector('#saveFileMenu')?.addEventListener('click', () => {
     if (!currentFile) return alert('请先打开或新建文件！')
     const center = document.querySelector('.center')
@@ -284,6 +325,10 @@ onMounted(() => {
   onUnmounted(() => {
     document.removeEventListener('keydown', onKeydown)
     document.removeEventListener('click', docClick)
+    if (designArea) {
+      designArea.removeEventListener('dragover', designDragOverHandler)
+      designArea.removeEventListener('drop', designDropHandler)
+    }
   })
 })
 </script>
