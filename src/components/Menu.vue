@@ -195,15 +195,7 @@ function openRecentFile(file) {
 }
 
 function onSelectWidget(tag) {
-  const center = document.querySelector('.center')
-  if (!center) return
-  try {
-    const el = document.createElement(tag)
-    el.textContent = `<${tag}>`
-    center.appendChild(el)
-  } catch (e) {
-    console.warn('无法创建元素', tag)
-  }
+  alert(`选中小部件：${tag}`)
 }
 
 onMounted(() => {
@@ -276,16 +268,7 @@ onMounted(() => {
       e.preventDefault()
       const tag = e.dataTransfer.getData('text/plain')
       if (!tag) return
-      try {
-        const node = document.createElement(tag)
-        node.textContent = `<${tag}> 拖拽生成`
-        node.style.border = '1px dashed #999'
-        node.style.padding = '4px'
-        node.style.margin = '4px'
-        designArea.appendChild(node)
-      } catch (err) {
-        console.warn('drop create element failed', err)
-      }
+      alert(`放下小部件：${tag}`)
     }
     designArea.addEventListener('dragover', designDragOverHandler)
     designArea.addEventListener('drop', designDropHandler)

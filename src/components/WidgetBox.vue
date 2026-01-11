@@ -5,7 +5,6 @@
 		<div class="widget-box-search-box">
 			<input type="text" v-model="query" placeholder="搜索HTML元素" @keydown.enter.prevent="filterWidgets" />
 			<button @click="filterWidgets">搜索</button>
-			<button @click="() => { query = '' ; filterWidgets() }">清除</button>
 		</div>
 
 		<div v-for="(panel, idx) in panels" :key="panel.name" class="panel">
@@ -13,7 +12,7 @@
 				<span>{{ panel.name }}</span>
 				<span class="arrow">{{ panel.open ? '▲' : '▼' }}</span>
 			</div>
-			<div class="widget-box-content" v-show="panel.open">
+			<div :class="['widget-box-content', { show: panel.open }]">
 				<div :class="panel.className">
 					<p v-for="item in filtered(panel.items)" :key="item" draggable="true" @dragstart="onDragStart($event, item)" @click.stop="selectWidget(item)">{{ item }}</p>
 				</div>
@@ -55,6 +54,7 @@ function filtered(items) {
 }
 
 function selectWidget(item) {
+	alert(`选中小部件：${item}`)
 	console.log('Selected widget:', item)
 	emit('select-widget', item)
 }
@@ -76,8 +76,15 @@ function onDragStart(e, item) {
 	try {
 		e.dataTransfer.setData('text/plain', item)
 		e.dataTransfer.effectAllowed = 'copy'
+		alert(`开始拖拽小部件：${item}`)
 	} catch (err) {
 		console.warn('dragstart failed', err)
 	}
 }
+
+function resetFilter() {
+	query.value = ''
+	filterWidgets()
+}
+
 </script>
