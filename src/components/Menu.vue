@@ -129,37 +129,14 @@
     </main>
 
     <!-- 2.3 右侧 AttributeEditor -->
-    <aside class="AttributeEditor">
-      <!-- 搜索框 -->
-      <div class="AttributeEditor-search-box">
-        <input type="text" id="search-input" placeholder="搜索HTML元素">
-        <button id="search-button">搜索</button>
-      </div>
-
-      <!-- 动画属性(Animation) 等属性组来自原始 index.html （已保留在此处） -->
-      <div class="panel">
-        <div class="header">动画属性<span class="arrow">▼</span></div>
-        <div class="AttributeEditor-content">
-          <div id="animation">animation</div>
-          <div id="animation-delay">animation-delay</div>
-          <div id="animation-direction">animation-direction</div>
-          <div id="animation-duration">animation-duration</div>
-          <div id="animation-fill-mode">animation-fill-mode</div>
-          <div id="animation-iteration-count">animation-iteration-count</div>
-          <div id="animation-name">animation-name</div>
-          <div id="animation-play-state">animation-play-state</div>
-          <div id="animation-timing-function">animation-timing-function</div>
-        </div>
-      </div>
-
-      <!-- 其余大量属性组已包含在原始片段，保留为 HTML 模板的一部分 -->
-    </aside>
+    <AttributeEditor />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import WidgetBox from './WidgetBox.vue'
+import AttributeEditor from './AttributeEditor.vue'
 
 const root = ref(null)
 let recentFiles = []

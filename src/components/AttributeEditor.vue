@@ -371,6 +371,10 @@ onMounted(() => {
     div.replaceChildren(div.textContent)
     div.appendChild(input)
   })
+
+  // 默认展开所有面板并把箭头设为 ▲
+  el.querySelectorAll('.AttributeEditor-content').forEach(c => c.classList.add('show'))
+  el.querySelectorAll('.panel > .header .arrow').forEach(a => a.textContent = '▲')
 })
 </script>
 
