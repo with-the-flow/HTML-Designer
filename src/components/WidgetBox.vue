@@ -30,17 +30,17 @@ const emit = defineEmits(['select-widget'])
 const query = ref('')
 const panels = ref([
 	{ name: '内容分区元素', className: 'content-partition-element', open: true, items: ['address','article','aside','footer','header','h1','h2','h3','h4','h5','h6','main','nav','section'] },
-	{ name: '文本内容元素', className: 'text-content-element', open: false, items: ['blockquote','dd','div','dl','dt','figcaption','figure','hr','li','menu','ol','p','pre','ul'] },
-	{ name: '内联文本语义元素', className: 'inline-text-semantic-element', open: false, items: ['a','abbr','b','bdi','bdo','br','cite','code','data','dfn','em','i','kbd','mark','q','rp','rt','ruby','s','samp','small','span','strong','sub','sup','time','u','var','wbr'] },
-	{ name: '图片和多媒体元素', className: 'image-and-multimedia-element', open: false, items: ['area','audio','img','map','track','video'] },
-	{ name: '嵌套内容元素', className: 'nested-content-element', open: false, items: ['embed','iframe','object','picture','portal','source'] },
-	{ name: 'SVG 和 MathML元素', className: 'svg-and-mathml-element', open: false, items: ['svg','math'] },
-	{ name: '脚本元素', className: 'script-element', open: false, items: ['canvas','noscript','script'] },
-	{ name: '编辑标识元素', className: 'edit-identifying-element', open: false, items: ['del','ins'] },
-	{ name: '表格内容元素', className: 'table-content-element', open: false, items: ['caption','col','colgroup','table','tbody','td','tfoot','th','thead','tr'] },
-	{ name: '表单元素', className: 'form-element', open: false, items: ['button','datalist','fieldset','form','input','label','legend','meter','optgroup','option','output','progress','select','textarea'] },
-	{ name: '交互元素', className: 'interactive-element', open: false, items: ['details','dialog','summary'] },
-	{ name: 'Web组件元素', className: 'web-component-element', open: false, items: ['slot','template'] },
+	{ name: '文本内容元素', className: 'text-content-element', open: true, items: ['blockquote','dd','div','dl','dt','figcaption','figure','hr','li','menu','ol','p','pre','ul'] },
+	{ name: '内联文本语义元素', className: 'inline-text-semantic-element', open: true, items: ['a','abbr','b','bdi','bdo','br','cite','code','data','dfn','em','i','kbd','mark','q','rp','rt','ruby','s','samp','small','span','strong','sub','sup','time','u','var','wbr'] },
+	{ name: '图片和多媒体元素', className: 'image-and-multimedia-element', open: true, items: ['area','audio','img','map','track','video'] },
+	{ name: '嵌套内容元素', className: 'nested-content-element', open: true, items: ['embed','iframe','object','picture','portal','source'] },
+	{ name: 'SVG 和 MathML元素', className: 'svg-and-mathml-element', open: true, items: ['svg','math'] },
+	{ name: '脚本元素', className: 'script-element', open: true, items: ['canvas','noscript','script'] },
+	{ name: '编辑标识元素', className: 'edit-identifying-element', open: true, items: ['del','ins'] },
+	{ name: '表格内容元素', className: 'table-content-element', open: true, items: ['caption','col','colgroup','table','tbody','td','tfoot','th','thead','tr'] },
+	{ name: '表单元素', className: 'form-element', open: true, items: ['button','datalist','fieldset','form','input','label','legend','meter','optgroup','option','output','progress','select','textarea'] },
+	{ name: '交互元素', className: 'interactive-element', open: true, items: ['details','dialog','summary'] },
+	{ name: 'Web组件元素', className: 'web-component-element', open: true, items: ['slot','template'] },
 ])
 
 function togglePanel(i) {

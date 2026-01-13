@@ -371,6 +371,15 @@ onMounted(() => {
     div.replaceChildren(div.textContent)
     div.appendChild(input)
   })
+
+  // 默认展开所有面板并将箭头设为“▲”
+  el.querySelectorAll('.panel').forEach(panel => {
+    const header = panel.querySelector('.header')
+    const content = panel.querySelector('.AttributeEditor-content')
+    const arrow = header.querySelector('.arrow')
+    if (arrow) arrow.textContent = '▲'
+    if (content) content.classList.add('show')
+  })
 })
 </script>
 
