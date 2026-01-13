@@ -374,4 +374,13 @@ onMounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.AttributeEditor {
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.AttributeEditor .AttributeEditor-content.show {
+  display: block;
+}
+</style>
