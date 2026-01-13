@@ -1,6 +1,13 @@
 <template>
   <div class="app-root">
     <Menu />
+    <div class="main-wrapper">
+      <WidgetBox @select-widget="onSelectWidget" />
+      <main class="center">
+        <span>（拖拽区域 / 实时预览）</span>
+      </main>
+      <AttributeEditor />
+    </div>
   </div>
 </template>
 
@@ -8,6 +15,10 @@
 import Menu from './components/Menu.vue'
 import WidgetBox from './components/WidgetBox.vue'
 import AttributeEditor from './components/AttributeEditor.vue'
+
+function onSelectWidget(item) {
+  console.log('Widget selected in App.vue:', item)
+}
 </script>
 
 <style>

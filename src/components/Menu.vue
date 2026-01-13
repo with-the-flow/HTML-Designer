@@ -117,26 +117,12 @@
       </ul>
     </nav>
   </div>
-
-  <!-- 2. 三栏主体 -->
-  <div class="main-wrapper">
-
-    <WidgetBox @select-widget="onSelectWidget" />
-
-    <!-- 2.2 中间设计区 -->
-    <main class="center">
-      <span>（拖拽区域 / 实时预览）</span>
-    </main>
-
-    <!-- 2.3 右侧 AttributeEditor -->
-    <AttributeEditor />
-  </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import WidgetBox from './WidgetBox.vue'
-import AttributeEditor from './AttributeEditor.vue'
+// import WidgetBox from './WidgetBox.vue'
+// import AttributeEditor from './AttributeEditor.vue'
 
 const root = ref(null)
 let recentFiles = []
