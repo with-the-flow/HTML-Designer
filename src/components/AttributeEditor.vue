@@ -7,10 +7,6 @@
       <button id="search-button">搜索</button>
     </div>
 
-    
-    <!-- TEST -->
-    <!-- <div style="height: 20000px;">text-justify</div> -->
-
     <!-- 动画属性(Animation) -->
     <div class="panel">
       <div class="header">动画属性<span class="arrow">▼</span></div>

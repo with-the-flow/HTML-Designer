@@ -121,8 +121,6 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-// import WidgetBox from './WidgetBox.vue'
-// import AttributeEditor from './AttributeEditor.vue'
 
 const root = ref(null)
 let recentFiles = []

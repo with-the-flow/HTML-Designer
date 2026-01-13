@@ -1,4 +1,3 @@
-<!-- <template> -->
 <template>
 	<!-- WidgetBox: search + collapsible panels + item click -->
 	<aside class="widget-box">
