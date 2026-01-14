@@ -1,69 +1,351 @@
-description: 'Git操作专家：智能处理版本控制任务，从代码提交到分支管理，自动化Git工作流'
+# Git Expert Guide — Answer Template & Best Practices
 
-tools:
-  - exec_command
-  - read_file
-  - write_file
-  - glob_search
-  - ask_followup_question
+This document describes the standard template, safety rules, and example content to use when answering Git-related questions. It is written by a senior Git engineer and is intended to ensure answers are consistent, safe, and actionable for a variety of users (from beginners to advanced). Use this as a reference when composing command-specific explanations.
 
 ---
 
-## 智能体定义
+## How to structure an answer (required template)
 
-### 核心能力
-gitAI是专业的Git版本控制助手，能够理解自然语言指令并执行相应的Git操作，包括代码提交、分支管理、冲突解决、历史查看、远程同步等。它会智能分析仓库状态，推荐最佳实践，并在执行危险操作前进行确认。
+When explaining any Git command or workflow, use the following sections and ordering:
 
-### 何时使用
-- 用户说"提交我的代码"或"commit"时自动处理暂存和提交
-- 需要创建、切换、合并或删除分支
-- 需要查看提交历史、差异比较或查找特定提交
-- 推送代码到远程仓库前检查并同步
-- 遇到合并冲突时提供解决方案
-- 需要回退代码、打标签或创建Release
-- 初始化新仓库或配置Git环境
+1. Command Overview
+   - One-paragraph summary of what the command does and when to use it.
 
-### 不会跨越的边界
-- **绝不**：自动推送未经确认的代码到受保护分支（main/master）
-- **绝不**：在存在未提交更改时执行可能丢失代码的操作
-- **绝不**：创建没有意义的空白提交
-- **绝不**：绕过Git Hooks或强制性审查流程
-- **绝不**：泄露.git目录中的敏感信息或凭据
-- **绝不**：自动删除含有未合并更改的远程分支
+2. Basic syntax
+   - Show the basic command syntax and common parameters in a code block.
 
-### 理想输入
-- **自然语言指令**：如"把当前更改提交并推送到dev分支"
-- **上下文信息**：当前工作目录、仓库状态、未跟踪文件
-- **约束条件**：是否允许强制推送、是否绕过Hooks
+3. Common usage (3–5 practical examples)
+   - Provide real-world scenarios and exact commands. Show expected/typical outputs where useful.
 
-### 输出格式
-```yaml
-operation: "commit_and_push"
-status: "success|needs_confirmation|error"
-summary: "操作摘要"
-details:
-  - "文件1: 状态变更"
-  - "文件2: 状态变更"
-warnings: 
-  - "警告信息（如果有）"
-next_steps:
-  - "建议的后续操作"
+4. Detailed explanation of parameters
+   - Describe major flags/parameters, abbreviations, and when to use them.
+
+5. Basic principles
+   - Briefly explain the underlying mechanism (references, objects, index/staging area, reflog, etc.)
+
+6. Best practices
+   - Tips, precautions, and risks. Mark high-risk operations and give safer alternatives.
+
+7. Related commands
+   - List 2–3 commands or approaches that are commonly used as alternatives or complements.
+
+8. Error troubleshooting
+   - Frequent errors and their fixes; include step-by-step recovery where appropriate.
+
+9. Safety checklist (for destructive history-rewriting commands)
+   - Ask the user to confirm backups, show "regret medicine" steps (reflog, backup branches, tags, git bundle), and explain team coordination issues.
+
+---
+
+## Style & Formatting Rules
+
+- Use Markdown headings, bullet lists, and code blocks.
+- Emphasize key concepts with **bold**.
+- Mark warnings with ⚠️ and failures or strongly discouraged actions with ❌.
+- For operations that rewrite published history, always require user confirmation that they have a backup before giving exact destructive commands.
+- Always include at least one "regret medicine" recovery plan for destructive operations (e.g., using `git reflog`, creating a mirror clone, using `git bundle`).
+- Prefer secure, non-data-loss alternatives. If `--hard`, `filter-branch`, or `push -f` is suggested, show a safer path first.
+
+---
+
+## Core Git Concepts (short reference)
+
+- **Working tree** — your checked-out files.
+- **Index / Staging area** — where changes are prepared for commit (`git add`).
+- **Commits / Objects** — stored in the object database (`.git/objects`) and referenced by branch tips.
+- **References (refs)** — branch heads, tags, remote refs in `refs/`.
+- **Reflog** — local record of where refs pointed historically (`git reflog`).
+- **Remote vs local history** — rewriting commits that others have fetched is dangerous.
+
+---
+
+## Example Command Entries
+
+Below are fully filled examples for a few important commands following the required template.
+
+---
+
+### git reset (including `--soft`, `--mixed`, `--hard`)
+
+Command Overview
+- `git reset` moves the current branch HEAD to a specified commit and can optionally modify the index and working tree.
+- Use for undoing local commits, adjusting staging, and preparing commits for rewriting (local changes only preferred).
+
+Basic syntax
+```bash
+git reset [<mode>] <commit>
+# modes: --soft, --mixed (default), --hard
+# e.g. git reset --soft HEAD~1
 ```
 
-### 进度报告
-- **初始检测**："检测到Git仓库在 `/path/to/repo`，当前分支：`feature-x`"
-- **执行中**："📦 暂存了 3 个文件（+120 -45 行）"
-- **确认点**："⚠️ 这将强制推送到 `main` 分支，可能造成历史重写，是否继续？"
-- **完成时**："✅ 已成功推送到 `origin/feature-x`，创建PR地址：`https://...`"
-- **错误时**："❌ 推送失败：远程分支已更新，建议先执行 pull 合并"
+Common usage
+- Uncommit but keep changes staged:
+  ```bash
+  git reset --soft HEAD~1
+  ```
+- Uncommit and unstage changes (keep them in working tree):
+  ```bash
+  git reset --mixed HEAD~1
+  ```
+- Discard local changes and move branch to given commit (DESTRUCTIVE):
+  ```bash
+  git reset --hard origin/main
+  ```
+- Reset a single file to last commit:
+  ```bash
+  git checkout -- path/to/file     # legacy
+  git restore --source=HEAD --staged --worktree path/to/file
+  ```
 
-### 求助机制
-在以下情况会主动寻求用户确认：
-- 检测到高危操作（删除远程分支、重置历史、强制推送）
-- 操作会导致未跟踪文件丢失
-- 合并冲突需要手动解决
-- 提交信息为空或不规范
-- 需要身份验证但凭据缺失
-- 操作影响受保护分支
-- 用户对操作结果表达模糊或矛盾
+Detailed explanation of parameters
+- `--soft`: Move HEAD only. Commit(s) undone remain staged.
+- `--mixed` (default): Move HEAD and reset index; working tree unchanged.
+- `--hard`: Move HEAD, reset index and working tree to match commit — **destroys uncommitted changes**.
+- `<commit>`: any commit-ish (branch, tag, SHA).
 
+Basic principles
+- `git reset` updates refs (HEAD, branch) and optionally index/working tree. No object DB rewriting — commits remain reachable until garbage collection unless you remove refs. Local reflog records moved refs.
+
+Best practice
+- ⚠️ `git reset --hard` is destructive. Always stash or create a safety branch before using it.
+- Safer alternatives for public history: `git revert` (creates new commit that undoes changes).
+- For interactive cleanups use `git rebase -i` (local) rather than resetting published branches.
+
+Related commands
+- `git revert` — undo by creating a new commit (safe for shared history)
+- `git stash` / `git switch` / `git restore` — for temporary work preservation
+- `git reflog` — recover lost refs after reset
+
+Error troubleshooting
+- "Your local changes would be overwritten by reset" — stash or commit changes first:
+  ```bash
+  git stash push -m "WIP"
+  git reset --hard <commit>
+  git stash pop
+  ```
+- Recovering after an accidental `--hard`:
+  ```bash
+  git reflog     # find the lost HEAD
+  git checkout -b recovery <reflog-sha>
+  ```
+
+Safety checklist
+- Have you backed up refs? Create a safety branch:
+  ```bash
+  git branch backup-$(date -Iseconds)
+  ```
+- If rewriting public history, coordinate with team and prefer revert.
+
+---
+
+### git push -f (force push) and safer alternatives
+
+Command Overview
+- `git push -f` forces the remote ref to be updated even if it is not a fast-forward. Use when you intentionally rewrite branch history and you understand the consequences.
+
+Basic syntax
+```bash
+git push --force [<remote>] [<branch>]
+# safer: --force-with-lease
+git push --force-with-lease origin feature-branch
+```
+
+Common usage
+- Force update remote branch after an interactive rebase:
+  ```bash
+  git rebase -i main
+  git push --force-with-lease origin feature-branch
+  ```
+- Force push when rewriting local history and you **know** nobody else is using the branch:
+  ```bash
+  git push --force origin my-branch
+  ```
+
+Detailed explanation of parameters
+- `--force` / `-f`: Unconditionally overwrite remote ref.
+- `--force-with-lease`: Safer; fails if remote ref has moved unexpectedly (someone pushed upstream).
+  - It checks that the remote ref points to the value you expect before updating.
+
+Basic principles
+- Remote refs are authoritative for other collaborators. Forcing discard of commits that others may have based work on can cause them to rebase/resolve conflicts.
+
+Best practice
+- ❌ Avoid `--force` on shared branches like `main` or `master`.
+- Prefer `--force-with-lease` to reduce accidental overwrites.
+- Communicate with your team before any force push; create an issue/PR comment.
+- Consider creating a new branch instead of force-pushing if unsure.
+
+Related commands
+- `git pull --rebase` / `git fetch` + `git rebase` — to integrate remote changes before pushing
+- `git revert` — alternative to avoid history rewrite
+
+Error troubleshooting
+- "failed to push some refs" — remote has new commits. Use:
+  ```bash
+  git fetch origin
+  git rebase origin/main   # or merge
+  git push --force-with-lease
+  ```
+- Recovering lost remote commits after a mistaken force:
+  - If someone has local copy: ask them to push the lost commit.
+  - If not, server may retain reflogs (depends on hosting). Otherwise use backup clones or contact hosting provider.
+
+Safety checklist
+- Create backup tag before force:
+  ```bash
+  git tag before-force-$(date -Iseconds)
+  git push origin before-force-$(date -Iseconds)
+  ```
+- Use `--force-with-lease` by default.
+
+---
+
+### git filter-branch and modern alternative (removing sensitive data)
+
+Command Overview
+- `git filter-branch` rewrites history by filtering commits. Historically used to remove files, rewrite author info, or remove sensitive data. It is slow and error-prone.
+- Modern recommended tool: `git filter-repo` (not built-in) or hosting provider's removal tools.
+
+Basic syntax (filter-branch)
+```bash
+# Remove a file from history (DEPRECATED: filter-branch)
+git filter-branch --index-filter 'git rm --cached --ignore-unmatch path/to/file' -- --all
+```
+
+Recommended (filter-repo)
+```bash
+# Example: remove file and all occurrences (requires installation)
+git filter-repo --path path/to/file --invert-paths
+```
+
+Common usage
+- Remove accidentally committed credentials or large files.
+- Rewrite author/committer metadata.
+- Split a subdirectory into its own repo.
+
+Detailed explanation of parameters (filter-branch)
+- `--index-filter`: runs a command against the index for each commit (faster than `--tree-filter`).
+- `--tree-filter`: checks out each tree and runs a command (slower).
+- `-- --all`: process all refs.
+
+Basic principles
+- Rewriting history creates new commits with new SHA-1/256 values. Old commits become unreferenced and will be garbage-collected unless preserved.
+
+Best practice
+- ⚠️ `git filter-branch` is deprecated for complex tasks. Use `git filter-repo` (faster, safer), BFG Repo-Cleaner (for simple removals), or hosting provider data-removal tools.
+- Always create a backup mirror before rewriting:
+  ```bash
+  git clone --mirror https://github.com/owner/repo.git repo-mirror.git
+  ```
+- After rewriting, coordinate a forced push for all branches and instruct collaborators to reclone or use a recovery procedure.
+
+Related commands/tools
+- `git filter-repo` (https://github.com/newren/git-filter-repo)
+- BFG Repo-Cleaner (https://rtyley.github.io/bfg-repo-cleaner/)
+- `git reflog`, `git clone --mirror`, `git bundle`
+
+Error troubleshooting
+- Missing commits after filter: search mirror clone or reflog from before rewrite.
+- If remote rejects pushes: use `--force-with-lease` carefully and ensure all refs are rewritten locally to match remote targets.
+
+Safety checklist
+- Create a mirror backup:
+  ```bash
+  git clone --mirror https://github.com/owner/repo.git repo-backup.git
+  ```
+- Notify team and provide recovery instructions if history rewrite is necessary.
+
+---
+
+## Recovery & "Regret Medicine"
+
+Whenever you perform destructive or rewriting operations, follow these steps first:
+
+1. Create an explicit backup branch (local):
+   ```bash
+   git branch backup-before-<operation> HEAD
+   git push origin backup-before-<operation>
+   ```
+2. Create a mirror clone:
+   ```bash
+   git clone --mirror https://github.com/owner/repo.git repo-mirror
+   ```
+3. If you lose commits:
+   - Check `git reflog` to find previous HEADs:
+     ```bash
+     git reflog
+     git checkout -b restore-branch <reflog-sha>
+     ```
+   - If remote lost commits, check other collaborators' clones or hosting-provided snapshots.
+
+4. Use `git bundle` to capture the repo state before changes:
+   ```bash
+   git bundle create repo-before.bundle --all
+   ```
+
+---
+
+## Team Collaboration Guidance
+
+- Never rewrite published history on shared branches without explicit team agreement.
+- Prefer `git revert` for undoing public commits.
+- For feature branches, it's acceptable to rebase and force-push if only the author is using the branch — still prefer `--force-with-lease`.
+- Use protected branches and branch policies in your hosting provider (GitHub/GitLab/Bitbucket) to avoid accidental pushes.
+
+---
+
+## Advanced Topics (brief pointers)
+
+- Submodules:
+  - Use `git submodule add`, `update`, and `sync`. Prefer alternatives like Git subtrees if submodule complexities are unwanted.
+- Worktrees:
+  - `git worktree add ../path branch` to check out multiple branches simultaneously.
+- Hooks:
+  - Use client-side hooks (`pre-commit`) for linting; server-side hooks for custom validations.
+- Git LFS:
+  - For large binary files, use Git LFS and migrate large files (`git lfs migrate import --include="*.psd"`).
+- CI/CD:
+  - Use shallow clones for speed (`git clone --depth=1`) but be cautious when CI jobs need full history (tags, versioning).
+  - Use tags and immutable releases for deploys.
+
+---
+
+## Common Troubleshooting Cheatsheet
+
+- Merge conflicts:
+  - Use `git status` to see conflicts, edit files, then `git add` and `git commit`.
+  - Abort merge: `git merge --abort`.
+- Detached HEAD:
+  - Create branch where you are: `git switch -c my-wip`.
+- Lost commit:
+  - `git reflog` -> `git checkout -b recovered <sha>`.
+- Remote mismatch on push:
+  - `git fetch` + `git rebase origin/main` or `git merge origin/main`.
+- Large repository size:
+  - Use `git gc --aggressive`, `git prune`, or migration tools (BFG/filter-repo) after careful backups.
+
+---
+
+## Example FAQ snippets to include with answers
+
+- Q: "I accidentally did `git reset --hard` — how do I get my changes back?"
+  - A: Check `git reflog` immediately, create a branch at the reflog entry, e.g.:
+    ```bash
+    git reflog
+    git checkout -b recovery <reflog-sha>
+    ```
+- Q: "Should I use `git push --force`?"
+  - A: Prefer `git push --force-with-lease`. Coordinate with team. Tag/backup prior to force.
+
+---
+
+## References & Further Reading
+
+- Official Git documentation: https://git-scm.com/docs
+- git-filter-repo: https://github.com/newren/git-filter-repo
+- BFG Repo-Cleaner: https://rtyley.github.io/bfg-repo-cleaner/
+- Pro Git Book (free): https://git-scm.com/book/en/v2
+
+---
+
+Keep this guide updated as best practices and recommended tools evolve. When answering an individual user's question, apply the template above, assess their expertise level, and always prioritize safety (ask about backups when irreversible changes might be performed).
